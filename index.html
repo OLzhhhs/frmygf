@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Жаным кешірші</title>
+  <style>
+    body {
+      background-color: pink;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      cursor: pointer;
+    }
+
+    #message {
+      font-size: 40px;
+      color: white;
+      text-align: center;
+      margin-top: 30%;
+      display: none;
+      font-family: sans-serif;
+    }
+
+    .heart {
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      position: absolute;
+      transform: rotate(45deg);
+      animation: float 2s ease-out forwards;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: '';
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      border-radius: 50%;
+      position: absolute;
+    }
+
+    .heart::before {
+      top: -15px;
+      left: 0;
+    }
+
+    .heart::after {
+      top: 0;
+      left: -15px;
+    }
+
+    @keyframes float {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(45deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-200px) scale(1.5) rotate(45deg);
+      }
+    }
+
+    #mute-btn {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body onclick="startExperience(event)">
+  <div id="message">Жаным кешіршіііііііі</div>
+
+  <button id="mute-btn" onclick="toggleMute(event)">🔇</button>
+
+  <audio id="bg-audio" loop>
+    <source src="kota.mp3" type="audio/mpeg" />
+    Ваш браузер не поддерживает аудио.
+  </audio>
+
+  <script>
+    const audio = document.getElementById('bg-audio');
+    const message = document.getElementById('message');
+    const muteBtn = document.getElementById('mute-btn');
+
+    let started = false;
+
+    function startExperience(e) {
+  if (!started) {
+    audio.currentTime = 16; // <-- Задай нужную секунду
+    audio.play();
+    message.style.display = 'block';
+    started = true;
+  }
+
+  createHeart(e.clientX, e.clientY);
+}
+
+    function toggleMute(e) {
+      e.stopPropagation(); // чтобы не запускался звук заново
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? '🔇' : '🔊';
+    }
+
+function createHeart(x, y) {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.style.left = `${x - 15}px`;
+  heart.style.top = `${y + 10}px`; // добавили +10px
+  document.body.appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 2000);
+}
+
+  </script>
+</body>
+</html>
